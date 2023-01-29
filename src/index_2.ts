@@ -1,5 +1,5 @@
 import fastify  from 'fastify'
-import swagger from '@fastify/swagger'
+import swagger from 'fastify-oas'
 
 import { Item } from './schema/schema'
 
