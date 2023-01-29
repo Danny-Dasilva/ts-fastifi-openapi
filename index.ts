@@ -2,8 +2,6 @@ import fastify from "fastify";
 import * as user from "./modules/user/user.controller";
 import { UserObject } from "./modules/user/user.schema";
 import fastifySwagger, { FastifyDynamicSwaggerOptions } from "fastify-swagger";
-import helmet from "fastify-helmet";
-import fastifySensible from "fastify-sensible";
 
 const server = fastify({
   logger: true,
@@ -11,11 +9,11 @@ const server = fastify({
 
 server.addSchema(UserObject);
 
-export interface FastifyDynamicSwaggerExtendedOptions
-  extends FastifyDynamicSwaggerOptions {
-  refResolver?: Object;
-}
-const fastifySwaggerExtendedOptions: FastifyDynamicSwaggerExtendedOptions = {
+// export interface FastifyDynamicSwaggerExtendedOptions
+//   extends FastifyDynamicSwaggerOptions {
+//   refResolver?: Object;
+// }
+const fastifySwaggerExtendedOptions: FastifyDynamicSwaggerOptions = {
   routePrefix: "/documentation",
   // refResolver: {
   //   buildLocalReference (json, baseUri, fragment, i) {
@@ -30,7 +28,7 @@ const fastifySwaggerExtendedOptions: FastifyDynamicSwaggerExtendedOptions = {
     },
     servers: [
       {
-        url: "http://localhost:8080",
+        url: "http://localhost:8000",
       },
     ],
   },
@@ -43,8 +41,6 @@ const fastifySwaggerExtendedOptions: FastifyDynamicSwaggerExtendedOptions = {
 };
 
 server.register(fastifySwagger, fastifySwaggerExtendedOptions);
-server.register(helmet);
-server.register(fastifySensible);
 
 server.get("/ping", async (request, reply) => {
   request.log.info("pong");
@@ -52,7 +48,7 @@ server.get("/ping", async (request, reply) => {
 });
 server.register(user.setupRoutes);
 
-server.listen(8080, (err, address) => {
+server.listen(8000, (err, address) => {
   if (err) {
     console.error(err);
     process.exit(1);
